@@ -59,12 +59,36 @@ def is_board_full(board):
     else:
         return True
 
+def get_computer_move(board, player):
+    
+    # Check for a win across the board
+    for i in range(1,10):
+        if board[i] == " ": # Check if the space in the board is empty
+            board[i] = player
+            if is_player_winner(board, player): # Check if that the combination a winner
+                return i # Return value, such that the computer wins
+            else:
+                board[i] = " " # If not a winner, then make this a space again
+    
+    # If the centre square is empty, choose that box
+    if board[5] == " ":
+        return 5
+    else:
+        return random.randint(1,9)
+
+    while True:
+        move = random.randint(1,9)
+        # If the move is blank, go ahead and return, otherwise try again
+        if board[move] == " ":
+            return move
+            break
+
 while True:
     os.system("clear")
     print_header()
     print_board()
     
-    # Player Input (X)
+    # Player Input (X)    
     choice = input("Please choose an empty space for X. ")
     choice = int(choice)
     
@@ -88,13 +112,12 @@ while True:
         print("Tie!")
         break
 
-    # Player Input (O)    
+    # Player Input (O)
+    choice = get_computer_move(board, "O")  
+    
     os.system("clear")
     print_header()
     print_board()
-    
-    choice = input("Please choose an empty space for O. ")
-    choice = int(choice)
     
     # Check to see if the space is empty first
     if board[choice] == " ":
