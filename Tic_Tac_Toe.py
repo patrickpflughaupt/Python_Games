@@ -65,7 +65,7 @@ def get_computer_move(board, player):
     for i in range(1,10):
         if board[i] == " ": # Check if the space in the board is empty
             board[i] = player
-            if is_player_winner(board, player): # Check if that the combination a winner
+            if is_player_winner(board, player): # Check if player's next move is a winner and if next move the computer can win
                 return i # Return value, such that the computer wins
             else:
                 board[i] = " " # If not a winner, then make this a space again
