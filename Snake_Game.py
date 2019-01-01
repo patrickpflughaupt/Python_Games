@@ -42,7 +42,7 @@ snake_food.goto(0,100)
 # List
 segments = []
 
-# Pen 
+# The Scoreboard
 pen = turtle.Turtle()
 pen.speed(0) # Animation speed
 pen.shape("square")
