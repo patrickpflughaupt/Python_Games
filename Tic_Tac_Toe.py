@@ -116,9 +116,6 @@ def main():
             
         # Check for X win
         if is_player_winner(board, "X"):
-            clear()
-            print_header()
-            print_board()
             print("X wins! Congratulations.")
             time.sleep(1)
             break
@@ -128,10 +125,6 @@ def main():
             print("Tie!")
             time.sleep(1)
             break
-    
-        clear()
-        print_header()
-        print_board()
     
     #------------------------------------------------------------------------------
     
@@ -147,9 +140,6 @@ def main():
             
         # Check for X win
         if is_player_winner(board, "O"):
-            clear()
-            print_header()
-            print_board()
             print("O wins! Congratulations.")
             time.sleep(1)
             break
