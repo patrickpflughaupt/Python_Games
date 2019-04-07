@@ -5,7 +5,7 @@
 #
 ### ------------------------------ DESCRIPTION OF THIS SCRIPT ---------------------------------- ###
 ### Tic tac goe game played by the human against a computer (opponent)                           ###
-### The computer is programmed for reinforcement learning                                        ###
+### The computer is a simple AI model                                                            ###
 ### This file contains the game itself and other functions that help with the analysis later     ###
 ### -------------------------------------------------------------------------------------------- ###
 #
