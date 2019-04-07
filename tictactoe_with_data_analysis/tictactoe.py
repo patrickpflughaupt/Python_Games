@@ -157,8 +157,6 @@ def computer_moves(board, player):
     best_move = [1,3,7,9]
     if board[1] != EMPTY or board[3] != EMPTY or board[7] != EMPTY or board[9] != EMPTY:
         return random.choice(best_move)
-    else:
-        return
 
     # If computer can win, take the move
     for i in range(1,len(board)):
@@ -336,10 +334,6 @@ def main():
         else:
             score += 20
             print('You took the most number of steps to win.')
-        subprocess.call(f'''
-echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
-echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_player.csv''', shell=True)
-        play_again()
 
     # If computer wins
     computer_choice = computer_moves(board, computer)
@@ -351,7 +345,7 @@ echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictac
         sm = smart_reallocation()
         board[sm] = computer
 
-    # If player wins
+    # If Computer wins
     if win_combo(board, computer):
         clear()
         intro_head()
@@ -366,10 +360,6 @@ echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictac
         else:
             score += 20
             print('You took the most number of steps to win.')
-            subprocess.call(f'''
-    echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
-    echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_computer.csv''', shell=True)
-            play_again()
 
     # If game results in a tie
     if tie_game() == True:
@@ -390,3 +380,9 @@ while True:
     intro_head()
     board_game()
     main()
+
+    if win_combo(board, player) == True or win_combo(board, computer) == True:
+        subprocess.call(f'''
+echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
+echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_computer.csv''', shell=True)
+        play_again()
