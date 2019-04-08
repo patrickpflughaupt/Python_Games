@@ -150,33 +150,50 @@ def win_combo(board,player):
     else:
         return False
 
+def smart_reallocation():
+    '''
+    Smart reallocation of empty spaces across the board
+    '''
+    occupied_space = []
+    for i,elem in enumerate(board):
+        if player in elem or computer in elem:
+            occupied_space.append(i)
+
+    yes = []
+    for i in range(1,10):
+        if i not in occupied_space:
+            yes.append(i)
+    
+    final_list = random.choice(yes)
+    return final_list
+
 def computer_moves(board, player):
     '''
     Function for computer moves
     '''
+#    # If computer can win, take the move
+#    for i in range(1,len(board)):
+#        if board[i] == EMPTY: # Check if the space in the board is empty
+#            board[i] = player
+#            if win_combo(board, player): # Check if player's next move is a winner and if next move the computer can win
+#                return i # Return value, such that the computer wins
+#        else:
+#            board[i] = EMPTY # If not a winner, then make this a space again
+    
+    final_list = smart_reallocation()
+    
     # Statistically, best moves start with any of the four corners
     best_move = [1,3,7,9]
-    if board[1] != EMPTY or board[3] != EMPTY or board[7] != EMPTY or board[9] != EMPTY:
-        return random.choice(best_move)
-
-    # If computer can win, take the move
-    for i in range(1,len(board)):
-        if board[i] == EMPTY: # Check if the space in the board is empty
-            board[i] = player
-            if win_combo(board, player): # Check if player's next move is a winner and if next move the computer can win
-                return i # Return value, such that the computer wins
-        else:
-            board[i] = EMPTY # If not a winner, then make this a space again
-
-    while True:
-        ######### Needs to be changed to a more advanced while loop #########
-        move = random.randint(1,9)
-        # If the move is blank, go ahead and return, otherwise try again
-        if board[move] == EMPTY:
-            return move
-        else:
-            new_move = random.randint(1,9)
-            return new_move
+    move = random.randint(1,9)
+    
+    if board.count(EMPTY) == 8:
+        if board[1] != EMPTY or board[3] != EMPTY or board[7] != EMPTY or board[9] != EMPTY:
+            return random.choice(best_move)
+    elif board[final_list] == EMPTY: # If the move is blank, go ahead and return, otherwise try again
+        return move
+    else:
+        new_move = smart_reallocation()
+        return new_move
 
 def tie_game():
     '''
@@ -259,23 +276,6 @@ def grid_point_db_computer():
     start_zero_c = ''.join(list_c)
     return start_zero_c
 
-def smart_reallocation():
-    '''
-    Smart reallocation of empty spaces across the board
-    '''
-    occupied_space = []
-    for i,elem in enumerate(board):
-        if player in elem or computer in elem:
-            occupied_space.append(i)
-
-    yes = []
-    for i in range(1,10):
-        if i not in occupied_space:
-            yes.append(i)
-
-    final_list = random.choice(yes)
-    return final_list
-
 def clear():
     '''
     Clear the screen
@@ -304,10 +304,22 @@ def play_again():
         time.sleep(2)
         exit()
 
+def changePlayer(player):
+    '''
+    Returns the opposite player given any player
+    '''
+    if player == player:
+        return computer
+    else:
+        return player
+
 def main():
     '''
     Main game function
     '''
+    # Change between player and computer
+    changePlayer(player)
+
     # Print score board
     out,stdout,stderr = extract_high_score()
     extract_high_score()
@@ -351,8 +363,6 @@ echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictac
 
     # If computer wins
     computer_choice = computer_moves(board, computer)
-
-    # Check to see if the space is empty first
     if board[computer_choice] == EMPTY:
         board[computer_choice] = computer
     else:
