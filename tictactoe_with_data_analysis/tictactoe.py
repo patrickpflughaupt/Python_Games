@@ -169,6 +169,7 @@ def computer_moves(board, player):
             board[i] = EMPTY # If not a winner, then make this a space again
 
     while True:
+        ######### Needs to be changed to a more advanced while loop #########
         move = random.randint(1,9)
         # If the move is blank, go ahead and return, otherwise try again
         if board[move] == EMPTY:
@@ -282,6 +283,14 @@ def clear():
     '''
     os.system("clear")
 
+def auto_replay():
+    '''
+    Automatically replays the game
+    '''
+    time.sleep(1)
+    clear()
+    subprocess.call("python3 tictactoe.py", shell=True)
+
 def play_again():
     '''
     Ask player to play again if game complete
@@ -335,6 +344,10 @@ def main():
         else:
             score += 20
             print('You took the most number of steps to win.')
+        subprocess.call(f'''
+echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
+echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_player.csv''', shell=True)
+        auto_replay()
 
     # If computer wins
     computer_choice = computer_moves(board, computer)
@@ -361,6 +374,10 @@ def main():
         else:
             score += 20
             print('You took the most number of steps to win.')
+        subprocess.call(f'''
+echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
+echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_computer.csv''', shell=True)
+        auto_replay()
 
     # If game results in a tie
     if tie_game() == True:
@@ -370,7 +387,7 @@ def main():
         score += 0
         subprocess.call(f'''
 echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv''', shell=True)
-        play_again()
+        auto_replay()
 
 ### ------------------------ ###
 ### ----- Running Game ----- ###
@@ -381,9 +398,3 @@ while True:
     intro_head()
     board_game()
     main()
-
-    if win_combo(board, player) == True or win_combo(board, computer) == True:
-        subprocess.call(f'''
-echo 'Player,{score},{strftime("%Y-%m-%d %H:%M", gmtime())},Computer,{score},{strftime("%Y-%m-%d %H:%M", gmtime())}' >> tictactoe_score_database.csv;
-echo '{strftime("%Y-%m-%d %H:%M", gmtime())},{grid_point_db_player()}' >> tictactoe_gridpoint_database_computer.csv''', shell=True)
-        play_again()
